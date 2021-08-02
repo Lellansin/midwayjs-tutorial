@@ -1,6 +1,7 @@
 # midwayjs-tutorial
 
 - web 基础
+  - web static
   - TODO list 网站
     - midway init 创建脚手架项目
     - 使用 ejs 等模板编写前端页面
