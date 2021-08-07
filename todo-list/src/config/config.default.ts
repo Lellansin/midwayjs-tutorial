@@ -23,7 +23,7 @@ export default (appInfo: EggAppInfo) => {
   // };
 
   config.static = {
-    // prefix: '/public/',
+    prefix: '/',
     dir: join(appInfo.baseDir, 'app/public'),
     // dirs: [ dir1, dir2 ] or [ dir1, { prefix: '/static2', dir: dir2 } ],
     // support lazy load

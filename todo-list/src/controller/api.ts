@@ -1,12 +1,14 @@
-import { Inject, Controller, Post, Provide, Query } from '@midwayjs/decorator';
+import { Inject, Controller, Post, Get, Provide, Query } from '@midwayjs/decorator';
 import { Context } from 'egg';
 import { IGetUserResponse } from '../interface';
 import { UserService } from '../service/user';
 
+const todoList = [];
+
 @Provide()
 @Controller('/api')
 export class APIController {
-  @Inject()
+  @Inject('ctx')
   ctx: Context;
 
   @Inject()
@@ -16,5 +18,19 @@ export class APIController {
   async getUser(@Query() uid: string): Promise<IGetUserResponse> {
     const user = await this.userService.getUser({ uid });
     return { success: true, message: 'OK', data: user };
+  }
+
+  // POST /api/todo
+  @Post('/todo')
+  async addTodo() {
+    const { text } = this.ctx.request.body;
+    todoList.push(text);
+    return 'ok';
+  }
+
+  // GET /api/todo
+  @Get('/todo')
+  async getTodo() {
+    return todoList;
   }
 }
