@@ -3,7 +3,7 @@ import { Context } from 'egg';
 import { IGetUserResponse } from '../interface';
 import { UserService } from '../service/user';
 
-const todoList = [];
+export const todoList = [];
 
 @Provide()
 @Controller('/api')
@@ -25,6 +25,8 @@ export class APIController {
   async addTodo() {
     const { text } = this.ctx.request.body;
     todoList.push(text);
+    // 跳转到直出的 HTML 页面
+    this.ctx.redirect('/');
     return 'ok';
   }
 
