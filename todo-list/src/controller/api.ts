@@ -2,8 +2,7 @@ import { Inject, Controller, Post, Get, Provide, Query } from '@midwayjs/decorat
 import { Context } from 'egg';
 import { IGetUserResponse } from '../interface';
 import { UserService } from '../service/user';
-
-export const todoList = [];
+import * as DB from './fileDB';
 
 @Provide()
 @Controller('/api')
@@ -24,7 +23,8 @@ export class APIController {
   @Post('/todo')
   async addTodo() {
     const { text } = this.ctx.request.body;
-    todoList.push(text);
+    DB.add(text);
+
     // 跳转到直出的 HTML 页面
     this.ctx.redirect('/');
     return 'ok';
@@ -33,6 +33,16 @@ export class APIController {
   // GET /api/todo
   @Get('/todo')
   async getTodo() {
-    return todoList;
+    return DB.list();
+  }
+
+  // GET /api/todo/delete
+  @Get('/todo/delete')
+  async deleteTodo() {
+    // const text = this.ctx.query.text;
+    const { text } = this.ctx.query;
+    DB.del(text);
+    // 跳转到直出的 HTML 页面
+    this.ctx.redirect('/');
   }
 }
