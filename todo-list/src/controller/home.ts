@@ -1,6 +1,6 @@
 import { Controller, Get, Provide, Inject } from '@midwayjs/decorator';
 import { Context } from 'egg';  // egg 中 ctx 的定义
-import { todoList } from './api'; // 导入 api.ts 中的 todolist 数组（需要 api.ts 中 export todolist）
+import * as DB from './fileDB';
 
 @Provide()
 @Controller('/')
@@ -13,6 +13,7 @@ export class HomeController {
   async home() {
     // 告诉浏览器，当前返回的是 HTML 页面（而不是纯文本）
     this.ctx.type = 'html';
+    const todoList = DB.list();
 
     return `
       动态渲染
@@ -21,9 +22,15 @@ export class HomeController {
       </form>
 
       <ul>
-        ${todoList.map(
-          (item) => '<li>' + item + '</li>'
-        ).join('')
-      }</ul>`;
+        ${todoList.map((item) => `
+          <li>
+            <form action="/api/todo/delete" method="get">
+              ${item}
+              <input name="text" type="hidden" value=${item} />
+              <button>删除</button>
+            </form>
+          </li>
+        `).join('')}
+      </ul>`;
   }
 }
