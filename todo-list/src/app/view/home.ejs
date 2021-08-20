@@ -1,0 +1,17 @@
+EJS 模板渲染 (file)
+
+<form action="/api/todo" method="POST">
+  <input name="text" /> <button>确定</button>
+</form>
+
+<ul>
+  <% list.forEach(function(item) { %>
+    <li>
+      <form action="/api/todo/delete" method="get">
+        <%= item %>
+        <input name="text" type="hidden" value="<%= item %>" />
+        <button>删除</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
