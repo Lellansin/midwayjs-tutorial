@@ -24,4 +24,10 @@ export class TodolistService {
     this.todoList.splice(idx, 1)
     writeFileSync('./cache', JSON.stringify(this.todoList));
   }
+
+  update(oldText, newText) {
+    const idx = this.todoList.findIndex((item) => item === oldText);
+    this.todoList[idx] = newText;
+    writeFileSync('./cache', JSON.stringify(this.todoList));
+  }
 }

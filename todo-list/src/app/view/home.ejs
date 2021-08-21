@@ -5,13 +5,59 @@ EJS 模板渲染 (file)
 </form>
 
 <ul>
-  <% list.forEach(function(item) { %>
+  <% list.forEach(function(item, idx) { %>
     <li>
-      <form action="/api/todo/delete" method="get">
-        <%= item %>
-        <input name="text" type="hidden" value="<%= item %>" />
-        <button>删除</button>
-      </form>
+      <span id="item-<%= idx %>"><%= item %></span>
+      <input id="item-input-<%= idx %>" name="text" type="hidden" value="<%= item %>" />
+      <a href="javascript:void(0)" onclick="showUpdateInput('item-<%= idx %>', 'item-input-<%= idx %>')">修改</a>
+      <a href="javascript:void(0)" onclick="saveUpdateInput('item-<%= idx %>', 'item-input-<%= idx %>')">保存</a>
+      <a href="javascript:void(0)" onclick="deleteTodo('<%= item %>')">删除</a>
     </li>
   <% }) %>
 </ul>
+
+<script>
+  function showUpdateInput(showId, updateInputId) {
+    // span 隐藏
+    const item = document.querySelector('#' + showId);
+    item.style.display = 'none';
+
+    // input 显示出来
+    const input = document.querySelector('#' + updateInputId);
+    input.type = '';
+  }
+
+  function saveUpdateInput(showId, updateInputId) {
+    // 拿 oldText
+    const item = document.querySelector('#' + showId);
+    const oldText = item.innerText;
+
+    // 拿 newText
+    const input = document.querySelector('#' + updateInputId);
+    const newText = input.value;
+
+    // PUT /api/todo
+    fetch("http://127.0.0.1:7001/api/todo?oldText=" + encodeURI(oldText) + "&newText=" + encodeURI(newText), {
+      "body": null,
+      "method": "PUT",
+      // "mode": "cors",
+      // "credentials": "omit"
+    }).then(() => {
+      // 重新渲染一下当前的页面
+      location.href = location.href;
+    });
+  }
+
+  function deleteTodo(text) {
+    // DELETE /api/todo
+    fetch("http://127.0.0.1:7001/api/todo?text=" + encodeURI(text), {
+      "body": null,
+      "method": "DELETE",
+      // "mode": "cors",
+      // "credentials": "omit"
+    }).then(() => {
+      // 重新渲染一下当前的页面
+      location.href = location.href;
+    });
+  }
+</script>
