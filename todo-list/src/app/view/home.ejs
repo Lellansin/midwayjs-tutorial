@@ -5,35 +5,48 @@ EJS 模板渲染 (file)
 </form>
 
 <ul>
-  <% list.forEach(function(item, idx) { %>
+  <% list.forEach(function(item) { %>
     <li>
-      <span id="item-<%= idx %>"><%= item %></span>
-      <input id="item-input-<%= idx %>" name="text" type="hidden" value="<%= item %>" />
-      <a href="javascript:void(0)" onclick="showUpdateInput('item-<%= idx %>', 'item-input-<%= idx %>')">修改</a>
-      <a href="javascript:void(0)" onclick="saveUpdateInput('item-<%= idx %>', 'item-input-<%= idx %>')">保存</a>
+      <span><%= item %></span>
+      <input name="text" type="hidden" value="<%= item %>" />
+      <a
+        class="modify"
+        href="javascript:void(0)"
+        onclick="showUpdateInput(this.parentElement)"
+      >修改</a>
+      <a
+        style="display: none"
+        class="update"
+        href="javascript:void(0)"
+        onclick="saveUpdateInput('<%= item %>', this.parentElement)"
+      >保存</a>
       <a href="javascript:void(0)" onclick="deleteTodo('<%= item %>')">删除</a>
     </li>
   <% }) %>
 </ul>
 
 <script>
-  function showUpdateInput(showId, updateInputId) {
+  function showUpdateInput(li) {
     // span 隐藏
-    const item = document.querySelector('#' + showId);
+    const item = li.querySelector('span')
     item.style.display = 'none';
 
     // input 显示出来
-    const input = document.querySelector('#' + updateInputId);
+    const input = li.querySelector('input');
     input.type = '';
+
+    // 修改按钮 隐藏
+    const modifyEl = li.getElementsByClassName('modify')[0];
+    modifyEl.style.display = 'none';
+
+    // 保存按钮 显示
+    const updateEl = li.getElementsByClassName('update')[0];
+    updateEl.style.display = 'unset';
   }
 
-  function saveUpdateInput(showId, updateInputId) {
-    // 拿 oldText
-    const item = document.querySelector('#' + showId);
-    const oldText = item.innerText;
-
+  function saveUpdateInput(oldText, li) {
     // 拿 newText
-    const input = document.querySelector('#' + updateInputId);
+    const input = li.querySelector('input');
     const newText = input.value;
 
     // PUT /api/todo
