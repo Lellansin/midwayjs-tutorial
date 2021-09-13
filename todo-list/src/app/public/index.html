@@ -1,5 +1,106 @@
 <!-- https://developer.mozilla.org/zh-CN/docs/Learn -->
+ 前端渲染
 
-<form action="/api/todo" method="POST">
-  <input name="text" /> <button>确定</button>
-</form>
+<div>
+  <input id="addTodoText" /> <button onclick="onClickAddTodo()">确定</button>
+</div>
+
+<ul id="todolist">
+  <!-- <li></li> -->
+</ul>
+
+<script>
+  listTodo();
+
+  function onClickAddTodo() {
+    const input = document.querySelector('#addTodoText');
+    addTodo(input.value);
+    input.value = '';
+  }
+
+  // 查
+  async function listTodo() {
+    // GET /api/todo
+    const res = await fetch("http://127.0.0.1:7001/api/todo")
+    const list = await res.json()
+    // { "id": 1, "text": "今天要学数学" }
+    renderList(list);
+  }
+
+  // 增
+  async function addTodo(text) {
+    // POST /api/todo
+    await fetch("http://127.0.0.1:7001/api/todo", {
+      "headers": {
+        "content-type": "application/json",
+      },
+      "body": JSON.stringify({ text }),
+      "method": "POST",
+    });
+
+    await listTodo();
+  }
+
+  // 改
+  async function updateTodo(id, text) {
+    // PUT /api/todo
+    await fetch("http://127.0.0.1:7001/api/todo/" + id, {
+      "headers": {
+        "content-type": "application/json",
+      },
+      "body": JSON.stringify({ text }),
+      "method": "PUT",
+    });
+
+    await listTodo();
+  }
+
+  // 删
+  async function deleteTodo(id) {
+    // DELETE /api/todo
+    await fetch("http://127.0.0.1:7001/api/todo/" + id, {
+      "method": "DELETE",
+    });
+
+    await listTodo();
+  }
+
+  // 刷新 DOM 的函数
+  function renderList(list) {
+    const dom = document.querySelector('#todolist');
+    let html = '';
+
+    for (const item of list) {
+      html += `
+        <li>
+          <span onclick="showUpdateInput(this.parentElement)">${item.text}</span>
+          <input onblur="saveUpdateInput('${item.id}', this.parentElement)" name="text" type="hidden" value="${item.text}" />
+          <a href="javascript:void(0)" onclick="deleteTodo('${item.id}')">删除</a>
+        </li>
+      `;
+    }
+
+    dom.innerHTML = html;
+  }
+
+  // 显示要修改的 todo 的 input
+  function showUpdateInput(li) {
+    // span 隐藏
+    const item = li.querySelector('span')
+    item.style.display = 'none';
+
+    // input 显示出来
+    const input = li.querySelector('input');
+    input.type = '';
+    input.focus();
+  }
+
+  // 修改 todo
+  function saveUpdateInput(id, li) {
+    // 拿 newText
+    const input = li.querySelector('input');
+    const newText = input.value;
+
+    updateTodo(id, newText);
+  }
+</script>
