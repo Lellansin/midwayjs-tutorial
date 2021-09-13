@@ -7,19 +7,8 @@ EJS 模板渲染 (file)
 <ul>
   <% list.forEach(function(item) { %>
     <li>
-      <span><%= item %></span>
-      <input name="text" type="hidden" value="<%= item %>" />
-      <a
-        class="modify"
-        href="javascript:void(0)"
-        onclick="showUpdateInput(this.parentElement)"
-      >修改</a>
-      <a
-        style="display: none"
-        class="update"
-        href="javascript:void(0)"
-        onclick="saveUpdateInput('<%= item %>', this.parentElement)"
-      >保存</a>
+      <span onclick="showUpdateInput(this.parentElement)"><%= item %></span>
+      <input onblur="saveUpdateInput('<%= item %>', this.parentElement)" name="text" type="hidden" value="<%= item %>" />
       <a href="javascript:void(0)" onclick="deleteTodo('<%= item %>')">删除</a>
     </li>
   <% }) %>
@@ -34,14 +23,7 @@ EJS 模板渲染 (file)
     // input 显示出来
     const input = li.querySelector('input');
     input.type = '';
-
-    // 修改按钮 隐藏
-    const modifyEl = li.getElementsByClassName('modify')[0];
-    modifyEl.style.display = 'none';
-
-    // 保存按钮 显示
-    const updateEl = li.getElementsByClassName('update')[0];
-    updateEl.style.display = 'unset';
+    input.focus();
   }
 
   function saveUpdateInput(oldText, li) {

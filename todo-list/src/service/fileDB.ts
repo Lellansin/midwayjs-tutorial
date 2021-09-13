@@ -1,33 +1,74 @@
 import { Provide, Scope, ScopeEnum } from '@midwayjs/decorator';
-import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { writeFile, readFile, existsSync } from 'fs';
+
+export interface ITodo {
+  id: number;
+  text: string;
+}
 
 @Scope(ScopeEnum.Singleton)
 @Provide('TodolistService')
 export class TodolistService {
-  private todoList = [];
+  private todoList: ITodo[] = [];
 
-  list() {
+  async list() {
     if (existsSync('./cache')) {
-      const buffer = readFileSync('./cache');
+      const buffer = await new Promise((resolve, reject) => readFile('./cache',
+        (err, data) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(data);
+        }));
       this.todoList = JSON.parse(buffer.toString());
     }
     return this.todoList;
   }
 
-  add(text) {
-    this.todoList.push(text);
-    writeFileSync('./cache', JSON.stringify(this.todoList));
+  async add(text: string) {
+    const list = await this.list();
+    list.push({
+      id: await this.incrId(),
+      text
+    });
+    await this.flushCache(list);
   }
 
-  del(text) {
-    const idx = this.todoList.findIndex((item) => item === text);
-    this.todoList.splice(idx, 1)
-    writeFileSync('./cache', JSON.stringify(this.todoList));
+  async del(id: number) {
+    const list = await this.list();
+    const idx = list.findIndex((item) => item.id === id);
+    list.splice(idx, 1)
+    await this.flushCache(list);
   }
 
-  update(oldText, newText) {
-    const idx = this.todoList.findIndex((item) => item === oldText);
-    this.todoList[idx] = newText;
-    writeFileSync('./cache', JSON.stringify(this.todoList));
+  async update(id: number, newText: string) {
+    const list = await this.list();
+    const idx = list.findIndex((item) => item.id === id);
+    if (id) {
+      list[idx].text = newText;
+      await this.flushCache(list);
+    }
+  }
+
+  private async incrId() {
+    const list = await this.list();
+    let maxId = 0;
+    for (const { id } of list) {
+      if (id > maxId) {
+        maxId = id;
+      }
+    }
+    return maxId + 1;
+  }
+
+  private flushCache(list: ITodo[]) {
+    return new Promise((resolve, reject) =>
+      writeFile('./cache', JSON.stringify(list), (err) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(null);
+      })
+    );
   }
 }
