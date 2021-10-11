@@ -8,5 +8,5 @@ export interface IUserOptions {
 export interface IGetUserResponse {
   success: boolean;
   message: string;
-  data: IUserOptions;
+  data?: any;
 }
