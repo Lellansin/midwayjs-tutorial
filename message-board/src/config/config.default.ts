@@ -21,5 +21,16 @@ export default (appInfo: EggAppInfo) => {
   //   csrf: false,
   // };
 
+  config.orm = {
+    type: 'mysql',
+    host: '127.0.0.1',
+    port: 3306,
+    username: 'root',
+    password: '',
+    database: 'message_board',
+    synchronize: true, // 如果第一次使用，不存在表，有同步的需求可以写 true
+    logging: true,
+  }
+
   return config;
 };
