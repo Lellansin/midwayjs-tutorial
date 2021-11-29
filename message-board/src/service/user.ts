@@ -15,7 +15,7 @@ export class UserService {
   // 检查用户密码是否与数据库中匹配
   async login(username: string, password: string) {
     const user = await this.fileDBService.findByUsername(username);
-    if (user.password === password) {
+    if (user && user.password === password) {
       return true;
     }
     return false;

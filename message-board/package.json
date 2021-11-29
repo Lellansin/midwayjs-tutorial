@@ -8,8 +8,11 @@
     "@midwayjs/core": "^2.3.0",
     "@midwayjs/web": "^2.3.0",
     "@midwayjs/decorator": "^2.3.0",
+    "@midwayjs/orm": "^2.13.4",
     "egg": "^2.0.0",
-    "egg-scripts": "^2.10.0"
+    "egg-scripts": "^2.10.0",
+    "mysql2": "^2.3.3",
+    "typeorm": "^0.2.41"
   },
   "devDependencies": {
     "@midwayjs/cli": "^1.0.0",
