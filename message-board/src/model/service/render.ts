@@ -7,6 +7,6 @@ import { join } from 'path';
 export class RenderService {
 
   async render(file: string, locals: any) {
-    return renderFile(join(__dirname, `../app/view/${file}.ejs`), locals);
+    return renderFile(join(__dirname, `../view/${file}.ejs`), locals);
   }
 }
