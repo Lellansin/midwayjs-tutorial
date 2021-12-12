@@ -10,8 +10,8 @@ export interface IUser {
 }
 
 @Scope(ScopeEnum.Singleton)
-@Provide('fileDBService')
-export class FileDBService {
+@Provide()
+export class UserDao {
   @InjectEntityModel(User)
   userModel: Repository<User>;
 

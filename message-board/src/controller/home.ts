@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, Provide } from '@midwayjs/decorator';
 import { Context } from 'egg';
-import { RenderService } from '../service/render';
+import { RenderService } from '../model/service/render';
 
 @Provide()
 @Controller('/')
