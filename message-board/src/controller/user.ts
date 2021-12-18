@@ -40,7 +40,7 @@ export class UserController {
     }
   }
 
-  @Get('/logout')
+  @Get('/logout') // /user/logout
   async logout() {
     this.ctx.cookies.set('my_session_data', '')
     this.ctx.redirect('/');

@@ -1,5 +1,6 @@
 import { Controller, Get, Inject, Provide } from '@midwayjs/decorator';
 import { Context } from 'egg';
+import { MessageService } from '../model/service/message';
 import { RenderService } from '../model/service/render';
 
 @Provide()
@@ -7,6 +8,9 @@ import { RenderService } from '../model/service/render';
 export class HomeController {
   @Inject()
   renderService: RenderService;
+
+  @Inject()
+  messageService: MessageService;
 
   @Inject()
   ctx: Context;
@@ -18,7 +22,9 @@ export class HomeController {
     if (text) {
       cookies = JSON.parse(text);
     }
-    return this.renderService.render('home', { cookies });
+
+    const msgList = await this.messageService.list();
+    return this.renderService.render('home', { cookies, msgList });
   }
 
   @Get('/register')
