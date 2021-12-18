@@ -1,8 +1,25 @@
 
 <div id="main">
   <% if (cookies) { %>
-     欢迎你, <%= cookies.username %>!
+     欢迎你, <%= cookies.username %>! <a href="/user/logout">登出</a>
+
+    <!-- 留言内容 -->
+    <!-- message list -->
+    <h2>留言列表</h2>
+    <ul>
+      <% msgList.forEach(function({ username, text }){ %>
+        <li><%= username %>: <%= text %></li>
+      <% }); %>
+    </ul>
+
+     <!-- 发留言 -->
+    <h2>发留言</h2>
+    <form method="post" action="/message">
+      <textarea name="text"></textarea>
+      <button>发送</button>
+    </form>
+
   <% } else { %>
-    请登录
+    <a href="/login">请登录</a>
   <% } %>
 </div>
