@@ -21,7 +21,7 @@ export class UserDao {
 
   async add(username: string, password: string) {
     // create a entity object
-    let user = new User();
+    const user = new User();
     user.username = username;
     user.password = password;
 
@@ -35,8 +35,8 @@ export class UserDao {
 
   async findByUsername(username: string) {
     const user = await this.userModel.findOne({
-      username
-    })
+      username,
+    });
     if (user) {
       return user;
     }
