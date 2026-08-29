@@ -1,30 +1,36 @@
-# my-midway-project
+# midwayjs-tutorial-hello-world
 
-## QuickStart
+Midway v4 (Koa) 基础项目 —— 教程第 1 步：项目初始化。
 
-<!-- add docs here for user -->
-
-see [midway docs][midway] for more detail.
-
-### Development
+## 快速开始
 
 ```bash
-$ npm i
-$ npm run dev
-$ open http://localhost:7001/
+# 安装依赖
+npm install
+
+# 开发模式（热更新）
+npm run dev
+
+# 访问
+open http://127.0.0.1:7001
 ```
 
-### Deploy
+首页返回 `Hello Bilibili!`，另有示例接口：
 
 ```bash
-$ npm start
-$ npm stop
+curl -X POST 'http://127.0.0.1:7001/api/get_user?uid=123'
 ```
 
-### npm scripts
+## 测试
 
-- Use `npm run lint` to check code style.
-- Use `npm test` to run unit test.
+```bash
+npm test
+npm run cov   # 覆盖率
+```
 
+## 构建与启动
 
-[midway]: https://midwayjs.org
+```bash
+npm run build          # 编译到 dist
+npm start              # 生产模式启动
+```

@@ -1,25 +1,15 @@
-import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import { MidwayConfig } from '@midwayjs/core';
+import joi from '@midwayjs/validation-joi';
 
-export type DefaultConfig = PowerPartial<EggAppConfig>;
-
-export default (appInfo: EggAppInfo) => {
-  const config = {} as DefaultConfig;
-
+export default {
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1626800829121_6518';
-
-  // add your config here
-  config.middleware = [];
-
-  config.midwayFeature = {
-    // true 代表使用 midway logger
-    // false 或者为空代表使用 egg-logger
-    replaceEggLogger: true,
-  };
-
-  // config.security = {
-  //   csrf: false,
-  // };
-
-  return config;
-};
+  keys: 'hello_world_1756500000000_1234',
+  koa: {
+    port: 7001,
+  },
+  validation: {
+    validators: {
+      joi,
+    },
+  },
+} as MidwayConfig;
