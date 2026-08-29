@@ -1,43 +1,43 @@
 # midwayjs-tutorial
 
+MidwayJS 教程（视频配套源码），已升级到 [Midway v4](https://www.midwayjs.org/docs/quickstart)（Koa）。
+
+## 项目
+
+- [hello-world](./hello-world) — 项目初始化
+- [todo-list](./todo-list) — TODO list 网站（web static / ejs 模板 / 文件持久化）
+- [message-board](./message-board) — 留言板（midway + typeorm + mysql 增删改查 / 单元测试）
+
+## 技术栈
+
+- Midway v4（Koa，Node >= 20）
+- TypeScript + mwtsc 构建 + Jest 测试
+- ejs 模板（@midwayjs/view-ejs）
+- typeorm 1.x + mysql2（@midwayjs/typeorm）
+
+## 路线图
+
 - web 基础
-  - TODO list 网站
-    - web static
-    - midway init 创建脚手架项目
-    - 使用 ejs 等模板编写前端页面
-    - 将 todo list 存储在文件
-  - 留言板
-    - 留言板页面
-    - 使用 midway + mysql + sql 语句编写增删改查
-    - 单元测试
-  - 聊天室
-    - websocket
-  - blog
-    - 一体化研发
-    - 使用 mysql + orm 编写增删改查接口
-    - 展示列表页（分页）
-    - 文章页
-    - 后台文章 list 页 （分页）
-    - 后台文章编辑页 (markdown)
+  - [x] TODO list 网站
+  - [x] 留言板
+  - [ ] 聊天室（websocket）
+  - [ ] blog（一体化研发 / orm 增删改查 / 分页 / markdown）
 - 中后台
-  - sso 登录系统
-    - 设计用户表
-    - 登录页面编写
-    - 鉴权中间件
-    - 302 跳转验证会跳
-  - 假期管理后台
-    - 设计员工表
-    - 建立员工权限体系
-    - schedule 定时添加员工
-    - 员工申请页
-    - TL 审批页
-  - 搭建系统
-    - 设计信息流首页
-    - 楼层搭建设计
-    - 搭建配置后台
-    - RabbitMq 推送广告
+  - [ ] sso 登录系统
+  - [ ] 假期管理后台
+  - [ ] 搭建系统
 - Serverless
-  - Hello world
-    - 普通项目
-  - 部署博客
-    - 聚合部署
+  - [ ] Hello world
+  - [ ] 部署博客（聚合部署）
+
+## 运行
+
+每个子项目都是独立的 midway 应用：
+
+```bash
+cd todo-list        # 或 hello-world / message-board
+npm install
+npm run dev         # http://127.0.0.1:7001
+```
+
+message-board 需要本机 MySQL（详见其 README）。
