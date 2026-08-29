@@ -13,7 +13,7 @@ export class APIController {
   // POST /api/todo
   @Post('/todo')
   async addTodo() {
-    const { text } = this.ctx.request.body;
+    const { text } = this.ctx.request.body as { text: string };
     await this.todolistService.add(text);
 
     // 跳转到直出的 HTML 页面
@@ -39,7 +39,7 @@ export class APIController {
   @Put('/todo/:id')
   async putTodo() {
     const { id } = this.ctx.params;
-    const { text } = this.ctx.request.body;
+    const { text } = this.ctx.request.body as { text: string };
     await this.todolistService.update(Number(id), text);
   }
 }
