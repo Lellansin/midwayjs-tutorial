@@ -1,8 +1,7 @@
-import { Inject, Controller, Post, Get, Provide } from '@midwayjs/decorator';
-import { Context } from 'egg';
-import { MessageService } from '../model/service/message';
+import { Inject, Controller, Post, Get } from '@midwayjs/core';
+import type { Context } from '@midwayjs/koa';
+import { MessageService } from '../model/service/message.service';
 
-@Provide()
 @Controller('/message')
 export class MessageController {
   @Inject()
@@ -19,7 +18,6 @@ export class MessageController {
 
   @Post('/')
   async post(): Promise<any> {
-    // TODO
     const cookieText = this.ctx.cookies.get('my_session_data');
     let cookies = null;
     if (cookieText) {
@@ -28,9 +26,9 @@ export class MessageController {
 
     // TODO 判断用户是否登录，未登录不能发送留言
 
-    const { text } = this.ctx.request.body;
+    const { text } = this.ctx.request.body as { text: string };
     console.log(cookies.username, text);
-    this.messageService.post(cookies.username, text);
+    await this.messageService.post(cookies.username, text);
 
     this.ctx.redirect('/');
   }

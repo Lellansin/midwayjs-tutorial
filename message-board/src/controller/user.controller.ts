@@ -1,9 +1,8 @@
-import { Inject, Controller, Post, Get, Provide } from '@midwayjs/decorator';
-import { Context } from 'egg';
+import { Inject, Controller, Post, Get } from '@midwayjs/core';
+import type { Context } from '@midwayjs/koa';
 import { IGetUserResponse } from '../interface';
-import { UserService } from '../model/service/user';
+import { UserService } from '../model/service/user.service';
 
-@Provide()
 @Controller('/user')
 export class UserController {
   @Inject()
@@ -14,7 +13,10 @@ export class UserController {
 
   @Post('/register')
   async register(): Promise<IGetUserResponse> {
-    const { username, password } = this.ctx.request.body;
+    const { username, password } = this.ctx.request.body as {
+      username: string;
+      password: string;
+    };
     if (!username || !password) {
       this.ctx.status = 500;
       return { success: false, message: '参数错误' };
@@ -26,7 +28,10 @@ export class UserController {
 
   @Post('/login')
   async login(): Promise<IGetUserResponse> {
-    const { username, password } = this.ctx.request.body;
+    const { username, password } = this.ctx.request.body as {
+      username: string;
+      password: string;
+    };
     const success = await this.userService.login(username, password);
     if (success) {
       // 成功登录

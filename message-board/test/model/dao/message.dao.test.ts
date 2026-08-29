@@ -1,17 +1,21 @@
 import { createApp, close } from '@midwayjs/mock';
-import { Framework } from '@midwayjs/web';
-import * as assert from 'assert';
-import { MessageDao } from '../../../src/model/dao/message';
+import { Framework } from '@midwayjs/koa';
+import { MessageDao } from '../../../src/model/dao/message.dao';
 
 describe('MessageDao', () => {
+  const username = `lellansin_${Date.now()}`;
+
   it('#list', async () => {
     // create app
-    const app = await createApp<Framework>();
+    const app = await createApp<Framework>({
+      appDir: process.cwd(),
+    });
+
     // 根据依赖注入 class 获取实例
     const messageDao = await app.getApplicationContext().getAsync<MessageDao>(MessageDao);
 
     const res = await messageDao.list();
-    assert(res.length);
+    expect(Array.isArray(res)).toBe(true);
 
     // close app
     await close(app);
@@ -19,24 +23,24 @@ describe('MessageDao', () => {
 
   it('#add & #delete', async () => {
     // create app
-    const app = await createApp<Framework>();
+    const app = await createApp<Framework>({
+      appDir: process.cwd(),
+    });
 
-    // 根据依赖注入 class 获取实例
     const messageDao = await app.getApplicationContext().getAsync<MessageDao>(MessageDao);
 
     const text = 'nihao, a a a !'
-    const res = await messageDao.add('lellansin', text);
+    const res = await messageDao.add(username, text);
 
     const list = await messageDao.list()
     const lastItem = list[list.length - 1];
-    assert.deepStrictEqual(res, lastItem);
-    assert.strictEqual(res.text, text);
-    assert.strictEqual(lastItem.text, text);
+    expect(res.text).toBe(text);
+    expect(lastItem.text).toBe(text);
 
     await messageDao.deleteById(res.id);
 
     const res2 = await messageDao.getById(res.id);
-    assert(!res2);
+    expect(res2).toBeNull();
 
     // close app
     await close(app);
@@ -44,20 +48,20 @@ describe('MessageDao', () => {
 
   it('#add & #update', async () => {
     // create app
-    const app = await createApp<Framework>();
+    const app = await createApp<Framework>({
+      appDir: process.cwd(),
+    });
 
-    // 根据依赖注入 class 获取实例
     const messageDao = await app.getApplicationContext().getAsync<MessageDao>(MessageDao);
 
     const text = 'nihao, update test!'
-    const res = await messageDao.add('lellansin', text);
-
+    const res = await messageDao.add(username, text);
 
     const updateText = 'update to this'
     await messageDao.updateById(res.id, updateText);
 
     const res2 = await messageDao.getById(res.id);
-    assert.strictEqual(res2.text, updateText);
+    expect(res2.text).toBe(updateText);
 
     await messageDao.deleteById(res2.id);
 

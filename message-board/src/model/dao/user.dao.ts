@@ -1,16 +1,9 @@
-import { Provide, Scope, ScopeEnum } from '@midwayjs/decorator';
-import { InjectEntityModel } from '@midwayjs/orm';
+import { Singleton } from '@midwayjs/core';
+import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entity/user';
+import { User } from '../entity/user.entity';
 
-export interface IUser {
-  id: number;
-  username: string;
-  password: string;
-}
-
-@Scope(ScopeEnum.Singleton)
-@Provide()
+@Singleton()
 export class UserDao {
   @InjectEntityModel(User)
   userModel: Repository<User>;
@@ -35,11 +28,15 @@ export class UserDao {
 
   async findByUsername(username: string) {
     const user = await this.userModel.findOne({
-      username,
+      where: { username },
     });
     if (user) {
       return user;
     }
     return null;
+  }
+
+  async deleteById(id: number) {
+    return this.userModel.delete({ id });
   }
 }

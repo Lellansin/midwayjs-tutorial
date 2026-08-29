@@ -1,6 +1,6 @@
-import { Provide, Inject } from '@midwayjs/decorator';
-import { MessageDao } from '../dao/message';
-import { UserDao } from '../dao/user';
+import { Provide, Inject } from '@midwayjs/core';
+import { MessageDao } from '../dao/message.dao';
+import { UserDao } from '../dao/user.dao';
 
 @Provide()
 export class MessageService {

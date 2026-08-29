@@ -1,5 +1,5 @@
-import { Provide, Inject } from '@midwayjs/decorator';
-import { UserDao } from '../dao/user';
+import { Provide, Inject } from '@midwayjs/core';
+import { UserDao } from '../dao/user.dao';
 
 @Provide()
 export class UserService {

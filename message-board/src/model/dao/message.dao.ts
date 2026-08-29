@@ -1,16 +1,9 @@
-import { Provide, Scope, ScopeEnum } from '@midwayjs/decorator';
-import { InjectEntityModel } from '@midwayjs/orm';
+import { Singleton } from '@midwayjs/core';
+import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { Message } from '../entity/message';
+import { Message } from '../entity/message.entity';
 
-export interface IUser {
-  id: number;
-  username: string;
-  password: string;
-}
-
-@Scope(ScopeEnum.Singleton)
-@Provide()
+@Singleton()
 export class MessageDao {
   @InjectEntityModel(Message)
   message: Repository<Message>;
@@ -22,11 +15,10 @@ export class MessageDao {
 
   // 查询 (根据id)
   async getById(id: number) {
-    // return this.message.findByIds([id]);
-    return this.message.findOne({ id });
+    return this.message.findOne({
+      where: { id },
+    });
   }
-  // 查询 (根据用户)
-  // 查询 (根据内容)
 
   // 新增
   async add(username: string, text: string) {

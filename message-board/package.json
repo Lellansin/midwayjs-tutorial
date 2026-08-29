@@ -1,61 +1,46 @@
 {
-  "name": "my-midway-project",
+  "name": "midwayjs-tutorial-message-board",
   "version": "1.0.0",
-  "description": "",
+  "description": "message board - midway v4 (koa) + typeorm + mysql",
   "private": true,
   "dependencies": {
-    "@midwayjs/bootstrap": "^2.3.0",
-    "@midwayjs/core": "^2.3.0",
-    "@midwayjs/web": "^2.3.0",
-    "@midwayjs/decorator": "^2.3.0",
-    "@midwayjs/orm": "^2.13.4",
-    "egg": "^2.0.0",
-    "egg-scripts": "^2.10.0",
-    "mysql2": "^2.3.3",
-    "typeorm": "^0.2.41"
+    "@midwayjs/bootstrap": "^4.0.0",
+    "@midwayjs/core": "^4.0.0",
+    "@midwayjs/info": "^4.0.0",
+    "@midwayjs/koa": "^4.0.0",
+    "@midwayjs/logger": "^4.0.0",
+    "@midwayjs/typeorm": "^4.0.0",
+    "@midwayjs/validation": "^4.0.0",
+    "@midwayjs/validation-joi": "^4.0.0",
+    "@midwayjs/view-ejs": "^4.0.0",
+    "joi": "^17.13.3",
+    "mysql2": "^3.11.0",
+    "typeorm": "^1.0.0"
   },
   "devDependencies": {
-    "@midwayjs/cli": "^1.0.0",
-    "@midwayjs/egg-ts-helper": "^1.0.1",
-    "@midwayjs/luckyeye": "^1.0.0",
-    "@midwayjs/mock": "^2.3.0",
-    "@types/jest": "^26.0.24",
-    "@types/node": "14",
-    "cross-env": "^6.0.0",
-    "jest": "^26.4.0",
-    "mwts": "^1.0.5",
-    "ts-jest": "^26.2.0",
-    "typescript": "^4.0.0"
+    "@midwayjs/mock": "^4.0.0",
+    "@types/jest": "^29.2.0",
+    "@types/node": "20",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "mwts": "^2.0.4",
+    "mwtsc": "^1.4.0",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.3.0"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=my-midway-project --framework=@midwayjs/web",
-    "stop": "egg-scripts stop --title=my-midway-project",
-    "start_build": "npm run build && cross-env NODE_ENV=development midway-bin dev",
-    "dev": "cross-env ets && cross-env NODE_ENV=local midway-bin dev --ts",
-    "test": "midway-bin test --ts",
-    "cov": "midway-bin cov --ts",
+    "start": "cross-env NODE_ENV=production node ./bootstrap.js",
+    "dev": "cross-env NODE_ENV=local mwtsc --watch --run @midwayjs/mock/app.js",
+    "test": "cross-env NODE_ENV=unittest jest --runInBand --forceExit",
+    "cov": "jest --coverage --runInBand --forceExit",
     "lint": "mwts check",
     "lint:fix": "mwts fix",
     "ci": "npm run cov",
-    "build": "midway-bin build -c",
-    "check": "luckyeye"
+    "build": "mwtsc --cleanOutDir"
   },
-  "midway-bin-clean": [
-    ".vscode/.tsbuildinfo",
-    "dist"
-  ],
-  "midway-luckyeye": {
-    "packages": [
-      "midway_v2"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "author": "",
+  "author": "Lellansin",
   "license": "MIT"
 }
